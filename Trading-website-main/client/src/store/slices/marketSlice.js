@@ -121,7 +121,7 @@ export const searchSymbols = createAsyncThunk(
 );
 
 const initialState = {
-  currentPrice: null,
+  currentPrice: {},
   priceHistory: [],
   searchResults: [],
   loading: false,
@@ -148,7 +148,10 @@ const marketSlice = createSlice({
       })
       .addCase(fetchPrice.fulfilled, (state, action) => {
         state.loading = false;
-        state.currentPrice = action.payload;
+        state.currentPrice = {
+          ...state.currentPrice,
+          [action.payload.symbol]: action.payload,
+        };
       })
       .addCase(fetchPrice.rejected, (state, action) => {
         state.loading = false;

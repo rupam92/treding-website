@@ -87,7 +87,7 @@ const Dashboard = () => {
 
   const calculateTotalValue = () => {
     return positions.reduce((total, position) => {
-      const currentPrice = prices[position.symbol]?.price || position.currentPrice;
+      const currentPrice = prices[position.symbol]?.price || position.currentPrice || 0;
       return total + position.quantity * currentPrice;
     }, 0);
   };
@@ -108,9 +108,11 @@ const Dashboard = () => {
 
   const generateChartData = () => {
     return positions.map(position => {
-      const currentPrice = prices[position.symbol]?.price || position.currentPrice;
+      const currentPrice = prices[position.symbol]?.price || position.currentPrice || 0;
       const value = position.quantity * currentPrice;
-      const growth = ((currentPrice - position.averagePrice) / position.averagePrice) * 100;
+      const growth = position.averagePrice
+        ? ((currentPrice - position.averagePrice) / position.averagePrice) * 100
+        : 0;
       return {
         name: position.symbol,
         value,
